@@ -11,5 +11,6 @@ public class While_2 {
             System.out.println(a+b);
 
         }
+        scanner.close();
     }
 }
