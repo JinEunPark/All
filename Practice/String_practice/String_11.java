@@ -27,8 +27,10 @@ public class String_11 {
                     for (int j = i + 1; j < str[e].length(); j++) {
 
                         char b = str[e].charAt(j);
-
-                        if (c == b && j - i != 1) {
+                        if (c == b && j - i == 1) {
+                            i = j;
+                            continue;
+                        } else if (c == b && j - i != 1) {
                             same[e]++;
                         }
                     }
