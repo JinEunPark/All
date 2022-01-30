@@ -12,11 +12,10 @@ public class Math_4 {
         double A = Double.parseDouble(st.nextToken());
         double B = Double.parseDouble(st.nextToken());
         double V = Double.parseDouble(st.nextToken());
-        double day = 0;
-        if (V < A) {
-            day = 1;
-        } else {
+        double day = 1;
+        if (V >A){
             day = (V - A) / (A - B) + 1;
+            if((V - A) % (A - B)!=0)++day;
         }
         System.out.print((int)Math.ceil(day));
     }
