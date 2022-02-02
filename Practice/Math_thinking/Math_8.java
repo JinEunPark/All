@@ -7,7 +7,7 @@ public class Math_8 {
     public static long fly(long start, long destination) {
         long distacne = destination - start;
         long max;
-        long count = 0;
+        long count;
         max = (int) Math.sqrt(distacne);
         if (max == Math.sqrt(distacne)) {
             count = max * 2 - 1;
@@ -34,7 +34,7 @@ public class Math_8 {
             long start = (long) Integer.parseInt(st.nextToken());
             long destination = (long) Integer.parseInt(st.nextToken());
 
-            sb.append(String.valueOf(fly(start, destination))).append("\n");
+            sb.append(fly(start, destination)).append("\n");//String 타임으로 전환할 필요가 없음
         }
         bw.write(sb.toString());
         bw.flush();
