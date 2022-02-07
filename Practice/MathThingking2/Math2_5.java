@@ -2,7 +2,7 @@ package MathThingking2;
 
 import java.io.*;
 
-public class p_1 {
+public class Math2_5 {
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
