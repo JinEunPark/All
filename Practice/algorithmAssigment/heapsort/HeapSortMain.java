@@ -12,6 +12,11 @@ import java.util.ArrayList;
 
 public class HeapSortMain {
     public static void main(String[]args)throws IOException {
+        long start = System.nanoTime();//시간 측정
+
+        long end = System.nanoTime();//시간 측정
+
+        System.out.println("수행시간: " + (end - start) + " ns");//측정된 시간 출력
 
         ReadFileAndConvert readFileAndConvert = new ReadFileAndConvert();
         ReadFileAndConvert readFileAndConvert1 = new ReadFileAndConvert();
@@ -22,17 +27,18 @@ public class HeapSortMain {
 
 
         SortMethod sortMethod = new QuickSort(new SelectPivotMostRight());
-        long beforeTime1 = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
+
+        long beforeTime1 = System.nanoTime(); //코드 실행 전에 시간 받아오기
         sortMethod.sort(list_32);
-        long afterTime1 = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+        long afterTime1 = System.nanoTime(); // 코드 실행 후에 시간 받아오기
         long secDiffTime1 = (afterTime1 - beforeTime1); //두 시간에 차 계산
         System.out.println("시간차이(m) : "+secDiffTime1);
         System.out.println("start:"+beforeTime1);
         System.out.println("end:"+afterTime1);
 
-        long beforeTime2 = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
+        long beforeTime2 = System.nanoTime(); //코드 실행 전에 시간 받아오기
         sortMethod.sort(list2_32_sorted);
-        long afterTime2 = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+        long afterTime2 = System.nanoTime(); // 코드 실행 후에 시간 받아오기
         long secDiffTime2 = (afterTime2 - beforeTime2); //두 시간에 차 계산
         System.out.println("시간차이(m) : "+secDiffTime2);
         System.out.println("start:"+beforeTime2);
@@ -40,9 +46,9 @@ public class HeapSortMain {
 
 
 
-        long beforeTime3 = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
+        long beforeTime3 = System.nanoTime(); //코드 실행 전에 시간 받아오기
         sortMethod.sort(list3_1024);
-        long afterTime3 = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+        long afterTime3 = System.nanoTime(); // 코드 실행 후에 시간 받아오기
         long secDiffTime3 = (afterTime3 - beforeTime3); //두 시간에 차 계산
         System.out.println("시간차이(m) : "+secDiffTime3);
         System.out.println("start:"+beforeTime3);
@@ -64,7 +70,7 @@ public class HeapSortMain {
         makeOutputFile2.makeOutputFile("insertionSort - array size 1024 reslut",
                 list3_1024.toString(),
                 new File("/Users/bagjin-eun/Desktop/javaProject/All/Practice/algorithmAssigment/outputfile/heapsort/heapsortArray_1024_result.txt"));
-        makeOutputFile3.makeOutputFile("time runtime-\n", "\narraysize-30: "+secDiffTime1+"\n"+"time diff-"+"arraysize-30-sorted: "+secDiffTime2+"\n"+"time diff-"+"arraysize-1024: "+secDiffTime3+"\n",
+        makeOutputFile3.makeOutputFile("time runtime-\n", "\narraysize-30: "+secDiffTime1+"\n"+"time diff-"+"arraysize-30-sorted: "+secDiffTime2+"\n"+"time diff-"+"arraysize-1024: "+secDiffTime3+"\n"+"compare function count: "+sortMethod.comCount,
                 new File("/Users/bagjin-eun/Desktop/javaProject/All/Practice/algorithmAssigment/outputfile/heapsort/timeResult.txt"));
 
         System.out.println(list_32);

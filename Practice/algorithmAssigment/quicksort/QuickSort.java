@@ -6,7 +6,7 @@ import algorithmAssigment.quicksort.Partition;
 
 import java.util.ArrayList;
 
-public class QuickSort extends Compare implements SortMethod {
+public class QuickSort extends SortMethod {
 
     Partition partition;
 

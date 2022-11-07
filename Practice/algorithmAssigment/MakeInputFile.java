@@ -80,7 +80,6 @@ public class MakeInputFile {
         }
         array_1024 = list2.toString();
         Collections.sort(list2);
-        Collections.reverse(list2);
 
         array_1024_sorted = list2.toString();
         makeInputfile(array_32, array_32_sorted, array_1024, array_1024_sorted);

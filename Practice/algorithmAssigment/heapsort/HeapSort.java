@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.function.ToIntFunction;
 
-public class HeapSort extends Compare implements SortMethod {
+public class HeapSort extends SortMethod {
 
     private void heapify(ArrayList<Integer> list, int len, int index) {
 

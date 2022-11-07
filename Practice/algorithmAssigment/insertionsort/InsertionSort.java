@@ -5,7 +5,7 @@ import algorithmAssigment.SortMethod;
 
 import java.util.ArrayList;
 
-public class InsertionSort extends Compare implements SortMethod {
+public class InsertionSort extends SortMethod {
 
     @Override
     public void sort(ArrayList<Integer> list) {

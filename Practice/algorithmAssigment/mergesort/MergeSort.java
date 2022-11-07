@@ -5,8 +5,11 @@ import algorithmAssigment.SortMethod;
 
 import java.util.ArrayList;
 
-public class MergeSort extends Compare implements SortMethod {
+public class MergeSort extends SortMethod {
 
+    public MergeSort(){
+        super();
+    }
 
      void merge(ArrayList<Integer> list, int leftIndex, int middleIndex, int rightIndex) {
         int leftListSize = middleIndex - leftIndex + 1;
