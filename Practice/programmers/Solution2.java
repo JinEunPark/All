@@ -49,7 +49,6 @@ public class Solution2 {
                     }
                 }
             }
-
             for(int i = 0; i< stack.size(); i++){
 
                 if(i !=(stack.size()-1)){
