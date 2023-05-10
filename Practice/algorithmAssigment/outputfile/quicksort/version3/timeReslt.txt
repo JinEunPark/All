@@ -1,0 +1,6 @@
+time runtime-
+: 
+arraysize-30: 443542
+time diff-arraysize-30-sorted: 82916
+time diff-arraysize-1024: 10795167
+compare function count: 9536
