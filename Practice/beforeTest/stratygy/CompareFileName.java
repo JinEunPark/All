@@ -1,6 +1,7 @@
 package beforeTest.stratygy;
 
 public class CompareFileName implements Comparable{
+
     @Override
     public int compareTo(Object object1, Object object2) {
         FileInfo file1 = (FileInfo)object1;

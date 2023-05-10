@@ -12,6 +12,11 @@ import java.text.SimpleDateFormat;
 
 public class Main {
 
+    Comparable comparable;
+
+
+
+
     String[] names = { "CompareModifiedDate", "CompareFileType", "CompareFileName", "Main", "CompareSize"  };
     String[] types = { "java", "java", "class", "java", "Class" };
     int[] sizes = { 120, 80, 150, 85, 100 };
