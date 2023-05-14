@@ -1,28 +1,20 @@
 package pHashMap;
 
-import java.util.Arrays;
-
-class Solution {
-    public static int[] solution(long n) {
-        int size = 0;
-       while(n%10 != 0){
-           n = n/10;
-       size++;}
-
-        int[] answer = new int[size];
-        int i = 0;
-        while(n != 0){
-            long j = n%10;
-            System.out.println(j);
-            answer[i] = Long.valueOf(j).intValue();
-            i++;
-            n = n/10;
+public class Solution {
+    public String solution(String s, int n) {
+        char[] charlist = new char[s.length()];//자바에서는 함수로 존재함
+        int a = (int)'a';
+        int A = (int)'A';
+        s.
+        for(int i =0; i < charlist.length; i++){
+            int at = s.charAt(i);
+            if(at >97){
+                charlist[i] =  (char)((at+n)%123) ;
+            }
         }
+
+        String answer = String.valueOf(charlist);
         return answer;
     }
 
-    public static void main(String[] args){
-        int[] a = solution(54321);
-        System.out.println(Arrays.toString(a));
-    }
 }
