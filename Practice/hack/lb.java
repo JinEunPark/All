@@ -11,6 +11,7 @@ public class lb {
 
     class Solution {
         public int solution(int[] money) {
+
             int len = money.length;
             int[] money2 = Arrays.stream(money).toArray();
             int[] result = new int[len];
