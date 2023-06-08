@@ -1,143 +1,63 @@
 package hyundai;
 
 import java.util.*;
-
-class Solution {
-    public static class Point implements Comparable<Point>{
-        int x,y;
-        Point(int x, int y ){
-            this.x = x;
-            this.y = y;
-        }
-
-        public String toString(){
-            return x + " "+y;
-        }
-
-        public int compareTo(Point o){
-            int result;
-            result = this.x - o.x;
-            if(result == 0){
-                result = this.y - o.y;
-            }
-            return result;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            Point p = (Point) o;
-            return (p.x == this.x && p.y == this.y);
-        }
-    }
-    public static boolean check(Point p, int[][] table){
-        return (p.x < table.length)&&(p.y < table[0].length)&&(p.x >= 0)&&(p.y >= 0)&&(table[p.x][p.y] == 1);
-    }
-
-    public static ArrayList<ArrayList<Point>> getblock(int[][] table){
-        ArrayList<ArrayList<Point>> blocks = new ArrayList<>();
-
-        for(int i = 0; i < table.length; i++){
-            for(int e = 0; e < table[0].length; e++){
-                ArrayList<Point> block = new ArrayList<>();
-
-                if(table[i][e] == 1){
-
-                    Queue<Point> q = new LinkedList<>();
-                    Point c = new Point(i,e);
-                    table[i][e] = 0;
-                    q.add(c);
-                    block.add(new Point(0,0));
-                    while(!q.isEmpty()){
-                        c = q.poll();
-                        System.out.println(c);
-                        ArrayList<Point> buf = new ArrayList<Point>();
-                        buf.add(new Point(c.x-1,c.y));
-                        buf.add(new Point(c.x+1,c.y));
-                        buf.add(new Point(c.x,c.y-1));
-                        buf.add(new Point(c.x,c.y+1));
-                        for(Point p: buf){
-                            if(check(p,table)){
-                                q.add(p);
-                                table[p.x][p.y] = 0;
-                                block.add(new Point(p.x-i,p.y-e));//0,0 을 기준으로 저장함.
-                            }
-                        }
-                    }
-                    blocks.add(block);
+    class Solution {
+//        static int answer = 0;
+        public static int dfs(int start, Set<Integer> visited, Map<Integer, Set<Integer>> result, int n){
+//            if(visited.size()==n){
+//                answer++;
+//            }
+            Set<Integer> nodes = result.get(start);
+            for(Integer i: nodes){
+                if(!visited.contains(i)){
+                    visited.add(i);
+                    dfs(i,visited,result,n);
                 }
             }
+            return visited.size();
         }
-        return blocks;
-    }
+        public static int solution(int n, int[][] results) {
+            int answer =0;
+            Map<Integer, Set<Integer>> result = new HashMap<>();
+            Map<Integer, Set<Integer>> result2 = new HashMap<>();
 
+            for(int i = 1; i<= n; i++){
+                Set<Integer> losers = new HashSet<>();
+                Set<Integer> winners = new HashSet<>();
 
-    public static int solution(int[][] game_board, int[][] table) {
-        int answer = 0;
-        for(int i = 0; i< game_board.length; i++){
-            for(int e = 0; e < game_board[0].length; e++){
-                if(game_board[i][e] == 0){
-                    game_board[i][e] = 1;
-                }else if(game_board[i][e] == 1){
-                    game_board[i][e] = 0;
-                }
+                result.put(i,losers);
+                result2.put(i,winners);
+
             }
-        }
-        ArrayList<ArrayList<Point>> game_blocks = getblock(game_board);
-        ArrayList<ArrayList<Point>> table_blocks = getblock(table);
 
-        answer = compareBlocks(answer,game_blocks,table_blocks);
-        if(answer == 0){
-            return -1;
-        }
-        return answer;
-    }
+            for(int i = 0; i< results.length; i++){
+                int w = results[i][0];
+                int l = results[i][1];
 
-    public static boolean rotateCompare(ArrayList<Point> g, ArrayList<Point> t){
-        Collections.sort(g);
-        for(int j = 0; j < 4; j++){
-            Collections.sort(t);
-            int ax = t.get(0).x;
-            int ay = t.get(0).y;
-            for(int k = 0; k < t.size(); k++){
-                t.get(k).x = t.get(k).x-ax;
-                t.get(k).y = t.get(k).y-ay;
+                result.get(l).add(w);
+                result2.get(w).add(l);
             }
-            if(g.containsAll(t)){
-                return true;
-            }else{
-                for(int i = 0; i <t.size(); i++){
-                    int temp = t.get(i).x;
-                    t.get(i).x = t.get(i).y;
-                    t.get(i).y = -temp;
+
+
+            int[] bit = new int[n];
+            for(int j = 1; j<=n; j++){
+                Set<Integer> visited = new HashSet<>();
+                Set<Integer> visited2 = new HashSet<>();
+                visited.add(j);
+                int a = dfs(j,visited,result,n);
+                int b = dfs(j,visited2,result2,n);
+                if((a+b) == n){
+                    answer++;
                 }
             }
 
-        }
 
-        return false;
+            return answer;
+        }
+        public static void main(String args[]){
+            int[][] r = {{4, 3}, {4, 2}, {3, 2}, {1, 2}, {2, 5}};
+            int n = 5;
+            System.out.println(solution(n,r));
+        }
     }
 
-    public static int compareBlocks(int answer, ArrayList<ArrayList<Point>> game_blocks, ArrayList<ArrayList<Point>> table_blocks){
-        boolean[] visited = new boolean[table_blocks.size()];
-        boolean[] visited2 = new boolean[game_blocks.size()];
-
-        for(int i = 0; i < game_blocks.size(); i++){
-            ArrayList<Point> g = game_blocks.get(i);
-            for(int j = 0; j < table_blocks.size(); j++){
-                if(!visited2[i]){
-                    ArrayList<Point> t = table_blocks.get(j);
-                    if(g.size() != t.size()){
-                        continue;
-                    }else if(!visited[j] && rotateCompare(g,t)) {
-                        visited2[i] = true;
-                        visited[j] = true;
-                        answer += t.size();
-                    }
-                }
-
-            }
-        }
-        return answer;
-    }
-
-}
