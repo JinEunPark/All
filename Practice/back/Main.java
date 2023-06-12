@@ -1,106 +1,68 @@
 package back;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
-import java.io.*;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 public class Main {
-        public interface Check{
-              boolean check (char[][]rgb, int x, int y, char alpha);
+    public static void main(String[] args) throws IOException {
+        int N;
+        int E;
+        int R;
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st  = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        E = Integer.parseInt(st.nextToken());
+        R = Integer.parseInt(br.readLine())-1;
 
+        List<ArrayList<int[]>> g = new ArrayList<>();
+        for(int i = 0; i< N; i++){
+            g.add(new ArrayList<>());
         }
 
-    public static int bfs(char[][]rgb, int x, int y, Check check){
-        char alpha = rgb[x][y];
-        rgb[x][y] = '-';
-        Queue<int[]> q = new LinkedList<>();
-        int[] init = {x,y};
-        q.add(init);
-        int[][] directs = {{0,1},{0,-1},{1,0},{-1,0}};
-        while(!q.isEmpty()){
-            int[] current = q.poll();
-            for(int[] d: directs){
-                int nx = current[0] + d[0];
-                int ny = current[1] + d[1];
-
-                if(check.check(rgb,nx,ny,alpha)){
-                    int n[] = {nx, ny};
-                    rgb[nx][ny] = '-';
-                    q.add(n);
-                }
-            }
-        }
-        return 1;
-    }
-    public static void main(String[] args) throws IOException{
-        BufferedReader bf  = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(bf.readLine());
-        char[][] rgb = new char[N][N];
-        char[][]rgb2 = new char[N][N];
-
-
-        int answer = 0;
-        int answer2 = 0;
         int index = 0;
-        Check check = new Check() {
-            @Override
-            public boolean check(char[][] rgb, int x, int y, char alpha) {
-                if(!(0<= x && rgb.length >x && 0<= y && rgb.length> y)){
-                    return false;
-                }else if(rgb[x][y]== '-'){
-                    return false;
-                }else if(alpha != rgb[x][y]){
-                    return false;
-                }
-                return true;
-            }
-        };
+        while(index < E){
+            String line = br.readLine();
+            st = new StringTokenizer(line);
+            int u = Integer.parseInt(st.nextToken())-1;
+            int v = Integer.parseInt(st.nextToken())-1;
+            int cost = Integer.parseInt(st.nextToken());
+            g.get(u).add(new int[] {v, cost});
 
-        Check check1 = new Check() {
-            @Override
-            public boolean check(char[][] rgb, int x, int y, char alpha) {
-                if(!(0<= x && rgb.length >x && 0<= y && rgb.length> y)){
-                    return false;
-                }else if(rgb[x][y]== '-'){
-                    return false;
-                }else if(alpha != rgb[x][y]){
-                    if((alpha == 'R' &&  rgb[x][y]=='G')|| (alpha == 'G' && rgb[x][y] == 'R')){
-                        return true;
-                    }else{
-                        return false;
+            index++;
+        }
+
+        PriorityQueue<int[]> nodes =new PriorityQueue<>((i,j)-> Integer.compare(i[1],j[1]));
+        boolean[] visited = new boolean[N];
+        nodes.add(new int[]{R,0});
+        int[] dist = new int[N];
+        Arrays.fill(dist, 99999999);
+        dist[R] = 0;
+
+        while(!nodes.isEmpty()){
+            int[] current = nodes.poll();
+            int u = current[0];
+            if(visited[u]) continue;
+            visited[u] = true;
+            for(int[] ne: g.get(u)){
+                int v = ne[0];
+                if(!visited[v]){
+                    if(dist[v] > dist[u] + ne[1]){
+                        dist[v] = dist[u] + ne[1];
+                        nodes.add(new int[] {v,dist[v]});
                     }
                 }
-                return true;
             }
-        };
-        while(index < N ){
-            char[] line = bf.readLine().toCharArray();
-            for(int i = 0; i< N; i++){
-                rgb[index][i] = line[i];
-            }
-            index ++;
-        }
-        for(int e = 0; e < N; e++){
-            rgb2[e] = rgb[e].clone();
         }
 
         for(int i = 0; i< N; i++){
-            for(int j= 0; j < N; j++){
-                if(rgb[i][j] != '-'){
-                    answer += bfs(rgb,i,j,check);
-                }
+            if(dist[i] == 99999999){
+                System.out.println("INF");
+                continue;
             }
+            System.out.println(dist[i]);
         }
 
-
-        for(int i = 0; i< N; i++){
-            for(int j= 0; j < N; j++){
-                if(rgb2[i][j] != '-'){
-                    answer2 += bfs(rgb2,i,j,check1);
-                }
-            }
-        }
-
-        System.out.println(answer + " "+ answer2);
     }
 }
