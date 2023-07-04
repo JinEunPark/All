@@ -1,30 +1,44 @@
 package back;
 
 import java.util.*;
-import java.util.stream.*;
 class Solution {
-//     static ArrayList<Integer> list = new ArrayList<>();
-//     public void dfs(int[] A, int[] B, int[] newArray, int index){
-//         for(int i = 0; i< B.length; i++){
-//             if()
-//         }
-//     }
+    public int[] solution(int n) {
+        int[] answer = {};
+        int[][] directions = {{1,0},{0,1},{-1,-1}};//밑 오 왼위
 
-    public int solution(int[] A, int[] B) {
-        int answer = -1;
-        List<Integer> A2 = Arrays.stream(A).boxed().collect(Collectors.toList());
-        List<Integer> B2 = Arrays.stream(A).boxed().collect(Collectors.toList());
+        int[][] buf = new int[n][n];
 
+        int target = n*(n+1)/2+1;
 
-        Collections.sort(B2, Collections.reverseOrder());
-        Collections.sort(A2);
-        for(int i = 0; i < A.length; i++){
-            if(B[i]>A[i]){
-                answer++;
+        int v = 1;
+        int x = 0;
+        int y = 0;
+        int d = 0;
+
+        while(target != v){
+
+            buf[x][y] = v;
+            v++;
+
+            if( x + directions[d][0] > n-1|| y + directions[d][1] > n-1
+                    || buf[x + directions[d][0]][y + directions[d][1]] != 0 ){
+
+                    d++;
+                d = d%3;
+            }
+
+            x = x + directions[d][0];
+            y = y + directions[d][1];
+        }
+
+        ArrayList<Integer> arr = new ArrayList<>();
+        for(int i = 0; i< buf.length; i++){
+            for(int j =0; j < i+1; j++){
+                arr.add(buf[i][j]);
             }
         }
 
-
-        return answer+1;
+        answer = arr.stream().mapToInt(Integer::intValue).toArray();
+        return answer;
     }
 }
