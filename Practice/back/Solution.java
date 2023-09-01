@@ -1,58 +1,79 @@
 package back;
 
 import java.util.*;
-import java.util.stream.*;
-
+import java.util.function.Consumer;
 class Solution {
-    Set<Set<String>> com = new HashSet<>();
+    public int binarySearch(List<Integer> scores, int score){
+        int start = 0;
+        int end = scores.size()-1;
 
-    public boolean check(String user_id, String banned_id){
-        if(user_id.length() == banned_id.length()){
-            int index = 0;
-            while(index < banned_id.length()
-                    &&(user_id.charAt(index) == banned_id.charAt(index)
-                    ||banned_id.charAt(index) == '*')){
-
-                index++;
+        while(end > start){
+            int mid = (start+end) /2;
+            if(scores.get(mid) >= score){
+                end = mid;
+            }else{
+                start = mid +1 ;
             }
-
-            if(index == user_id.length())return true;
-
-            return false;
-        }else{
-            return false;
         }
+        if(scores.get(start) < score){
+            return scores.size();
+        }
+        return start;
+    }
+    public int count(Map<String, List<Integer>> scores, String query){
+        String[] tokens = query.split(" (and )?");
+
+        String key = String.join("", Arrays.copyOf(tokens, tokens.length-1));//해당 인덱스 하나 전까지 copy
+
+        List<Integer> scorelist = scores.get(key);
+        if(scorelist == null)        {
+            return 0;
+        }else{
+            int score = Integer.parseInt(tokens[tokens.length-1]);
+            return scorelist.size() - binarySearch(scorelist,score);
+        }
+
+
+    }
+    public Map<String, List<Integer>> buildScores(String[] info){
+        Map<String, List<Integer>> scoresMap = new HashMap<>();
+
+        for(int i = 0; i< info.length; i++){
+            String[] tokens = info[i].split(" ");
+            int score = Integer.parseInt(tokens[tokens.length-1]);
+
+            forEachKey(0,"",tokens, e -> {
+                scoresMap.putIfAbsent(e, new ArrayList<>());
+                scoresMap.get(e).add(score);
+            });
+
+        }
+        for(List<Integer> scorelist: scoresMap.values()){
+            scorelist.sort(Integer::compare);
+        }
+        return scoresMap;
     }
 
-    public void getCom(boolean[]selected, String[] user_id, String[] banned_id, int index, Set<String> result){
-        if(index == banned_id.length){
-            com.add(result);
+
+    public void forEachKey(int index, String prefix, String[] tokens, Consumer<String> action) {
+        if (index == tokens.length - 1) {
+            action.accept(prefix);
             return;
         }
-
-        for(int i = 0; i < user_id.length; i++){
-            if(!selected[i]&&check(user_id[i], banned_id[index])){
-                boolean[] boll = selected.clone();
-                boll[i] = true;
-                Set<String> result2 = new HashSet<>(result);
-                result2.add(user_id[i]);
-                int tmp = index;
-                tmp++;
-                getCom(boll, user_id, banned_id,tmp ,result2);
-            }
-
-        }
-
+        forEachKey(index + 1, prefix + tokens[index], tokens, action);
+        forEachKey(index + 1, prefix + "-", tokens, action);
     }
 
-    public int solution(String[] user_id, String[] banned_id) {
-        int answer = 0;
-        boolean[] selected = new boolean[user_id.length];
 
-        for(int j = 0; j < banned_id.length; j++){
-            getCom(selected,user_id,banned_id,0,new HashSet<>());
+    public int[] solution(String[] info, String[] query) {
+        Map<String, List<Integer>> scoresMap = buildScores(info);
+        int[] answer = new int[query.length];
+
+        for(int i = 0; i< query.length; i++){
+            String q = query[i];
+            answer[i] = count(scoresMap,q);
+
         }
-
-        return com.size();
+        return answer;
     }
 }

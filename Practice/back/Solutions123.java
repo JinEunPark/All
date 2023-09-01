@@ -1,8 +1,6 @@
 package back;
 
-import java.util.*;
-
-public class Solutions {
+public class Solutions123 {
     public static boolean cp(String input){
         return input.matches(".*p.*r.*o.*g.*r.*a.*m.*m.*e.*r.*");
     }
