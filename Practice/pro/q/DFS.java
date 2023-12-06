@@ -20,6 +20,7 @@ public class DFS {
                 }
             }
         }
+        MimeBodyPart mimeBodyPart;
         public int solution(int n, int[][] results) {
             int answer = 0;
 
